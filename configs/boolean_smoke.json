@@ -1,0 +1,29 @@
+{
+  "upstream_commit": "c69e9318577b34b5b896996571aefd4ba6053f58",
+  "dataset": {
+    "path": "data/d1/boolean_basic_depth2.json",
+    "operators": "basic",
+    "expected_operators": ["AND", "OR"],
+    "max_depth": 2,
+    "seed": 33550336,
+    "mechanistic_opts": {
+      "apply_commutativity": true,
+      "apply_idempotence_and_or": true,
+      "flatten_associativity": true
+    }
+  },
+  "benchmark": {
+    "n_samples": 1,
+    "n_queries_per_sample": 3,
+    "seed": 33550336
+  },
+  "ollama": {
+    "model": "qwen2.5:3b",
+    "options": {
+      "temperature": 0.6,
+      "seed": 42,
+      "num_predict": 128,
+      "num_ctx": 4096
+    }
+  }
+}
