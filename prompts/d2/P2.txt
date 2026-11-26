@@ -1,0 +1,50 @@
+You are given partial observations of a Boolean function with variables: x, y
+
+            Allowed operators: AND (conjunction), OR (disjunction)
+
+            Observations (input -> output):
+            {{OBSERVATIONS}}
+
+            Prior expressions generated (avoid repeating any expression 
+            that is equivalent under the rules below):
+            {{PRIOR_EXPRESSIONS}}
+
+            Task: Generate a single Boolean expression that is consistent with ALL observations.
+
+            Requirements:
+            1. Use ONLY the variables: x, y
+            2. Use ONLY these operators: OR, AND
+            3. The expression must match all given observations
+            4. Structural uniqueness is judged by these rules:
+            - Commutativity: reorderings are the SAME (e.g., x AND y = y AND x).
+        - Idempotence: duplicates of the same input under AND/OR collapse (e.g., x AND x = x; x OR x = x).
+        - Associativity flattening: cascades of the SAME operator are the SAME regardless of parentheses (e.g., (x AND y) AND x = x AND (y AND x) = x AND x AND y).
+        - No distributivity, absorption, or De Morgan normalization: mixing operators keeps expressions DIFFERENT (e.g., (x AND y) OR x ≠ x AND (y OR x)).
+            5. Expression depth should be at most 2 levels of nesting
+            6. Do not use boolean constants True or False anywhere in the expression.
+
+            Output format: 
+            - For this basic grammar, AND and OR are the only allowed operators.
+            - The examples illustrate only the syntax and output format. They do not represent the correct answers for the current observation group.
+            - Your expression must match every observation for the current group.
+            - Return ONLY the Boolean expression on a single line
+            - Use plain text format (no LaTeX, no markdown, no special formatting)
+            - Use uppercase for operators. 
+            - Use lowercase for variables: x, y
+            - Use parentheses for grouping when needed
+            - Start your response with "Expression: " followed by the expression
+            
+            Examples of correct format:
+            Expression: x AND y
+            Expression: x OR y
+            Expression: x AND (x OR y)
+            Expression: y OR (x AND y)
+            
+            Additional format examples:
+            Expression: x AND y
+            Expression: x OR y
+            DO NOT use formats like:
+            - \(x \land y\)  (LaTeX)
+            - `x AND y`  (markdown)
+            - x ∧ y  (mathematical symbols)
+            

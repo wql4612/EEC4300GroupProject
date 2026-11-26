@@ -1,0 +1,13 @@
+# P3 Freeze records byte hashes, including each file's original line endings.
+scripts/run_d2_prompt.py -text
+scripts/p3_preflight.py -text
+scripts/ollama_process.py -text
+scripts/p3_collection_seal.py -text
+scripts/prepare_d2_prompt.py -text
+scripts/run_boolean_smoke.py -text
+scripts/score_d2_prompt.py -text
+scripts/score_p3_prompt.py -text
+prompts/d2/P0.txt -text
+prompts/d2/P1.txt -text
+prompts/d2/P2.txt -text
+prompts/d2/P3-draft.txt -text
