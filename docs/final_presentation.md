@@ -1,13 +1,13 @@
-# EEC4300 final presentation rehearsal
+# EEC4300 final presentation
 
-Ten minutes, four speakers. The baseline and proposed method have passed synthetic smoke tests. The deck labels the historical P3 results as measured and the exploratory comparison as unmeasured. Use the completed-results wording in the final segment only after checking a sealed official comparison. [Final editable PowerPoint](presentation/EEC4300-final.pptx)
+Ten minutes, four speakers. The historical P3 Prompt comparison is complete and officially scored. The 96-slot ACB–FSCB comparison and the 48-slot reward ablation are frozen and have not been run. Synthetic tests verify the implementation and offline scoring pipeline. FSCB's live efficacy is unmeasured. [Final editable PowerPoint](presentation/EEC4300-final.pptx)
 
 | Time | Speaker | Screen |
 | --- | --- | --- |
 | 00:00–02:20 | Qiulin Wu | Task, benchmark metrics, D1–P3 evidence |
 | 02:20–04:45 | Yujia Wang | Candidate history and online validation |
 | 04:45–07:15 | Jiayi Zhou | ACB, FSCB, and the experimental controls |
-| 07:15–10:00 | Wenkang Zhou | Official results or current evidence, limitations and reproduction |
+| 07:15–10:00 | Wenkang Zhou | Experiment status, limitations and reproduction |
 
 ## Qiulin Wu · Boolean mechanism recovery (2:20)
 
@@ -27,7 +27,12 @@ Both online methods use the same history, so improvement from history alone is o
 
 ## Jiayi Zhou · Controllers and experimental controls (2:30)
 
-ACB is a contextual bandit over three temperatures. At each step the context includes public observation size, remaining budget and recent validated feedback. We update only the arm that produced the response.
+ACB is a contextual bandit over three temperatures. Slide 6 shows each method's context.
+
+- ACB `x_t = [1, n_obs/4, (B-t)/B, recent_valid_rate, recent_unique_valid_rate]`
+- FSCB `x_t = [1, n_obs/4, (B-t)/B, recent_valid_rate, recent_unique_valid_rate, occupied_bins/5]`
+
+Both share the first five inputs. Only FSCB adds the occupied-bucket fraction. The inputs use a fixed bias, public observations, remaining budget and online validation history. Ground Truth stays offline. LinUCB updates only the selected arm.
 
 FSCB also tracks five public structural buckets. Explain that a leaf and a mixed-root structure contribute to different buckets, and that capacities are public Grammar properties. Once a valid key exists, a Frontier arm can add a short hint for the least covered available bucket. The same generated response can still earn credit for a different structure. The added first-discovery reward decays with the count already discovered in that bucket. Repeats and invalid responses share ACB's reward.
 
@@ -35,8 +40,10 @@ Describe the controls. Frozen Qwen2.5-3B, the same P1 base, same output limits, 
 
 ## Wenkang Zhou · Evidence and limitations (2:45)
 
-**After a sealed official run:** show one chart of official RR, VR and NR by method and a second chart of paired RR differences. State the actual request count, failures, average delta, and variation by group. Explain how often Frontier became available and was actually used. Give the measured ablation result if it was separately authorized and completed. Otherwise say which mechanism the combined comparison leaves unresolved.
+### Slide 8 · Experiment status (07:15–08:40)
 
-**If collection is still pending, use this narration for slide 8.** “I am Wenkang Zhou. The first row on this slide is the completed P3 Prompt comparison, which Qiulin discussed earlier. The 96 requests in the second row are a separate, planned comparison. We verified that both methods can consume the planned slots, that the runner archives the responses, and that the archived synthetic responses can be replayed by the official evaluator. Those tests measure correctness of our implementation and scoring path. They do not estimate a change in recovery rate. The third row is the registered reward ablation. It would add 48 requests with the coverage bonus set to zero. The same structural context and Frontier policy would remain available. That gives us a way to examine the reward mechanism separately, while keeping the separate timing visible as a limitation. We have no live efficacy estimate for either condition today.” [Historical P3 figure](figures/p3/p3-official-metrics.png)
+> At the time of this presentation, the historical P3 Prompt comparison is complete and officially scored. The 96-slot ACB–FSCB comparison and the separate 48-slot reward ablation have been frozen but have not been run. Our synthetic tests verify the implementation and offline scoring pipeline, but they do not measure live model efficacy. Therefore, we make no claim that FSCB outperforms ACB.
 
-Close with the key limitations. Only four distinct development groups, a small grammar, one local model and four requests per trajectory. Any observed difference is descriptive. Show the repository's frozen source, public instructions and access-controlled evidence inventory. Explain where to find official replay, the paired table and the benchmark documentation. [Repository reproduction conditions](../README.md#full-reproduction-and-private-evidence)
+### Slide 9 · Scope and reproducibility (08:40–10:00)
+
+The exploratory design has four distinct development groups, a small Grammar, one local model and four requests per trajectory. Any eventual paired difference would be descriptive. The public repository contains the frozen source, configuration and synthetic tests. The historical P3 archive contains the responses and reference keys used for its official scoring. Raw responses will be sealed for official offline replay after collection in the exploratory comparisons. [Repository reproduction conditions](../README.md#full-reproduction-and-private-evidence)

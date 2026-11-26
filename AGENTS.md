@@ -2,11 +2,19 @@
 
 ## Project Structure
 
-Read `PROJECT_BRIEF.md` before starting work. It defines the HypoSpace course deliverables, experiment design, and one-week schedule. The initial workspace contains AGENTS.md and PROJECT_BRIEF.md.No implementation code or upstream benchmark source has been added yet. Inspect the workspace and Git configuration before creating or cloning additional files.. Locate the official HypoSpace checkout before adding code. Keep ACB-Hypo and its experiment runner separate from the upstream benchmark modules so the original Boolean Genetic Interaction benchmark remains runnable. Prioritize that task and a working end-to-end pipeline for the deadline.
+Read `PROJECT_BRIEF.md` before starting work. It defines the HypoSpace course deliverables and research scope. `README.md` documents setup, repository status and reproduction. `AGENTS.md` records the working rules for this repository.
+
+- `scripts/` contains the ACB-Hypo and FSCB-Hypo controllers, shared candidate history, experiment runners and scoring tools.
+- `tests/` contains the public synthetic checks and the full offline regression suite.
+- `configs/` and `prompts/` contain experiment manifests, settings and frozen prompt templates.
+- `docs/` contains the preregistration, historical analysis, implementation audit and speaking guide. The final PowerPoint is in `docs/presentation/`.
+- `pyproject.toml` declares the project environment and `uv.lock` pins dependencies.
+
+Inspect the workspace and Git configuration before creating or cloning files. Locate the pinned HypoSpace sibling checkout before using upstream code. Keep the ACB-Hypo and FSCB-Hypo implementation and runners separate from the upstream benchmark modules so the original Boolean Genetic Interaction benchmark remains runnable.
 
 ## Local Development
 
-Use Python 3.10 or 3.11 as specified in the brief. Check the local environment before running inference.
+Use the Python 3.11 environment declared by the project and pinned dependencies. Check the local environment before running inference.
 
 - `python --version` checks the active Python interpreter.
 - `ollama list` lists installed models. `ollama ps` shows which models are loaded.
@@ -22,7 +30,7 @@ Use four spaces for indentation, `snake_case` for modules and functions, and `Pa
 
 Run the original Boolean benchmark as a baseline, then run a pilot on five observation sets with a small query budget before scaling. Check parsing, validation, deduplication, and logging. Use `test_<module>.py` for new Python tests and name cases after the behavior they verify.
 
-Keep test-set answers out of controller inputs and rewards. Use the official metrics and keep the model, prompts, observation sets, budgets, and validation procedure consistent across comparisons. Record the model version, configuration, seeds, raw JSON outputs, actions, and rewards. Report measured results only. Keep API keys out of Git.
+Keep test-set answers out of controller inputs and rewards. Preserve the official HypoSpace evaluation definitions and keep the model, prompts, observation sets, budgets, and validation procedure consistent across comparisons. Record the model version, configuration, seeds, raw JSON outputs, actions, and rewards. Report measured results only. Keep API keys out of Git.
 
 ## Commits and Pull Requests
 
