@@ -15,10 +15,9 @@ uv pip check --python .venv/Scripts/python.exe
 git clone --no-checkout https://github.com/CTT-Pavilion/_HypoSpace.git ../HypoSpace
 git -C ../HypoSpace checkout --detach c69e9318577b34b5b896996571aefd4ba6053f58
 git -C ../HypoSpace status --short --branch
-ollama list
 ```
 
-Use a running local Ollama server with `qwen2.5:3b` already installed. The six direct Python dependencies are the imports required by upstream's Boolean generator, benchmark, and LLM interface. `uv.lock` pins them and their transitive dependencies.
+The six direct Python dependencies are the imports required by upstream's Boolean generator, benchmark, and LLM interface. `uv.lock` pins them and their transitive dependencies. Before live generation, use `ollama list` to verify that `qwen2.5:3b` is available on the local server.
 
 ## Reproduce the Boolean smoke test
 
@@ -61,3 +60,16 @@ $env:PYTHONHASHSEED = '0'
 ```
 
 Reproducing the original generation conditions additionally requires the frozen Ollama 0.40.14 runtime, matching `qwen2.5:3b` model digest and Template SHA-256, the versioned Prompt templates, and the exact public observations, Seed mapping, sampling settings, and request order from the corresponding manifest. The P3 preflight and sealed receipts document these bindings. A fresh run would have its own results directory and experiment record. [Pinned Boolean benchmark source](https://github.com/CTT-Pavilion/_HypoSpace/blob/c69e9318577b34b5b896996571aefd4ba6053f58/boolean/boolean_benchmark.py) · [P3 verification procedure](docs/p3_validation_plan.md) · [Evidence inventory](docs/git_archival_plan.md)
+
+## Exploratory FSCB-Hypo study
+
+ACB-Hypo selects among three temperatures using validation feedback. FSCB-Hypo adds structural coverage to the context, a decaying first-discovery bonus within each structural bucket, and optional Frontier prompts. Both use the same structured candidate history and the same frozen base Prompt. The live comparison and reward ablation remain unmeasured. The study is scoped to four unused Boolean development groups and is designed for descriptive comparison. [Preregistered protocol](docs/exploratory_preregistration.md) · [Public run configuration](configs/exploratory_online_manifest.json) · [Implementation audit](docs/fscb_implementation_audit.md) · [Controller](scripts/fscb_hypo.py) · [Runner](scripts/run_exploratory.py)
+
+After the setup steps above, run the synthetic tests from a public checkout. They exercise the candidate history, both controllers, the primary comparison, the reward ablation, and sealed replay through the pinned official evaluator. They require neither a model server nor the team's private archive.
+
+```powershell
+$env:PYTHONHASHSEED = '0'
+.\.venv\Scripts\python.exe -B tests/run_offline.py --public
+```
+
+Run the same command without `--public` for the full regression suite after placing the private archive described above. Live experiment preparation also requires that archive. The runner separates collection and offline scoring and records the matched request seeds, policy context, actual action, raw response and feedback for each slot. [Ten-minute presentation deck](docs/presentation/EEC4300-final.pptx)

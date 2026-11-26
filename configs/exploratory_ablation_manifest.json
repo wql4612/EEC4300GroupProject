@@ -1,0 +1,594 @@
+{
+  "base": {
+    "blocks": [
+      {
+        "first_method": "ACB",
+        "group_id": "n3_inputs_00_01_10_outputs_010",
+        "observations": "(x=0, y=0) -> 0\n(x=0, y=1) -> 1\n(x=1, y=0) -> 0",
+        "seed": 42,
+        "slot_seeds": [
+          42,
+          43,
+          44,
+          45
+        ]
+      },
+      {
+        "first_method": "FSCB",
+        "group_id": "n2_inputs_01_10_outputs_11",
+        "observations": "(x=0, y=1) -> 1\n(x=1, y=0) -> 1",
+        "seed": 42,
+        "slot_seeds": [
+          46,
+          47,
+          48,
+          49
+        ]
+      },
+      {
+        "first_method": "ACB",
+        "group_id": "n3_inputs_01_10_11_outputs_011",
+        "observations": "(x=0, y=1) -> 0\n(x=1, y=0) -> 1\n(x=1, y=1) -> 1",
+        "seed": 42,
+        "slot_seeds": [
+          50,
+          51,
+          52,
+          53
+        ]
+      },
+      {
+        "first_method": "FSCB",
+        "group_id": "n2_inputs_00_01_outputs_01",
+        "observations": "(x=0, y=0) -> 0\n(x=0, y=1) -> 1",
+        "seed": 42,
+        "slot_seeds": [
+          54,
+          55,
+          56,
+          57
+        ]
+      },
+      {
+        "first_method": "FSCB",
+        "group_id": "n3_inputs_00_01_10_outputs_010",
+        "observations": "(x=0, y=0) -> 0\n(x=0, y=1) -> 1\n(x=1, y=0) -> 0",
+        "seed": 271828,
+        "slot_seeds": [
+          271828,
+          271829,
+          271830,
+          271831
+        ]
+      },
+      {
+        "first_method": "ACB",
+        "group_id": "n3_inputs_01_10_11_outputs_011",
+        "observations": "(x=0, y=1) -> 0\n(x=1, y=0) -> 1\n(x=1, y=1) -> 1",
+        "seed": 271828,
+        "slot_seeds": [
+          271832,
+          271833,
+          271834,
+          271835
+        ]
+      },
+      {
+        "first_method": "FSCB",
+        "group_id": "n2_inputs_00_01_outputs_01",
+        "observations": "(x=0, y=0) -> 0\n(x=0, y=1) -> 1",
+        "seed": 271828,
+        "slot_seeds": [
+          271836,
+          271837,
+          271838,
+          271839
+        ]
+      },
+      {
+        "first_method": "ACB",
+        "group_id": "n2_inputs_01_10_outputs_11",
+        "observations": "(x=0, y=1) -> 1\n(x=1, y=0) -> 1",
+        "seed": 271828,
+        "slot_seeds": [
+          271840,
+          271841,
+          271842,
+          271843
+        ]
+      },
+      {
+        "first_method": "ACB",
+        "group_id": "n2_inputs_00_01_outputs_01",
+        "observations": "(x=0, y=0) -> 0\n(x=0, y=1) -> 1",
+        "seed": 314159,
+        "slot_seeds": [
+          314159,
+          314160,
+          314161,
+          314162
+        ]
+      },
+      {
+        "first_method": "FSCB",
+        "group_id": "n3_inputs_00_01_10_outputs_010",
+        "observations": "(x=0, y=0) -> 0\n(x=0, y=1) -> 1\n(x=1, y=0) -> 0",
+        "seed": 314159,
+        "slot_seeds": [
+          314163,
+          314164,
+          314165,
+          314166
+        ]
+      },
+      {
+        "first_method": "ACB",
+        "group_id": "n3_inputs_01_10_11_outputs_011",
+        "observations": "(x=0, y=1) -> 0\n(x=1, y=0) -> 1\n(x=1, y=1) -> 1",
+        "seed": 314159,
+        "slot_seeds": [
+          314167,
+          314168,
+          314169,
+          314170
+        ]
+      },
+      {
+        "first_method": "FSCB",
+        "group_id": "n2_inputs_01_10_outputs_11",
+        "observations": "(x=0, y=1) -> 1\n(x=1, y=0) -> 1",
+        "seed": 314159,
+        "slot_seeds": [
+          314171,
+          314172,
+          314173,
+          314174
+        ]
+      }
+    ],
+    "model": "qwen2.5:3b",
+    "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+    "options": {
+      "num_ctx": 4096,
+      "num_predict": 128
+    },
+    "schema_version": 1,
+    "template": "You are given partial observations of a Boolean function with variables: x, y\n\n            Allowed operators: AND (conjunction), OR (disjunction)\n\n            Observations (input -> output):\n            {{OBSERVATIONS}}\n\n            Prior expressions generated (avoid repeating any expression \n            that is equivalent under the rules below):\n            {{PRIOR_EXPRESSIONS}}\n\n            Task: Generate a single Boolean expression that is consistent with ALL observations.\n\n            Requirements:\n            1. Use ONLY the variables: x, y\n            2. Use ONLY these operators: OR, AND\n            3. The expression must match all given observations\n            4. Structural uniqueness is judged by these rules:\n            - Commutativity: reorderings are the SAME (e.g., x AND y = y AND x).\n        - Idempotence: duplicates of the same input under AND/OR collapse (e.g., x AND x = x; x OR x = x).\n        - Associativity flattening: cascades of the SAME operator are the SAME regardless of parentheses (e.g., (x AND y) AND x = x AND (y AND x) = x AND x AND y).\n        - No distributivity, absorption, or De Morgan normalization: mixing operators keeps expressions DIFFERENT (e.g., (x AND y) OR x ≠ x AND (y OR x)).\n            5. Expression depth should be at most 2 levels of nesting\n            6. Do not use boolean constants True or False anywhere in the expression.\n\n            Output format: \n            - Return ONLY the Boolean expression on a single line\n            - Use plain text format (no LaTeX, no markdown, no special formatting)\n            - Use uppercase for operators. \n            - Use lowercase for variables: x, y\n            - Use parentheses for grouping when needed\n            - Start your response with \"Expression: \" followed by the expression\n            \n            Examples of correct format:\n            Expression: x AND y\n            Expression: x OR y\n            Expression: x AND (x OR y)\n            Expression: y OR (x AND y)\n            \n            DO NOT use formats like:\n            - \\(x \\land y\\)  (LaTeX)\n            - `x AND y`  (markdown)\n            - x ∧ y  (mathematical symbols)\n            "
+  },
+  "condition": "FSCB-no-bonus",
+  "schema_version": 1,
+  "slots": [
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 1,
+      "method": "FSCB-no-bonus",
+      "model_seed": 42,
+      "primary_index": 2,
+      "seed": 42,
+      "slot": 1
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 2,
+      "method": "FSCB-no-bonus",
+      "model_seed": 43,
+      "primary_index": 3,
+      "seed": 42,
+      "slot": 2
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 3,
+      "method": "FSCB-no-bonus",
+      "model_seed": 44,
+      "primary_index": 6,
+      "seed": 42,
+      "slot": 3
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 4,
+      "method": "FSCB-no-bonus",
+      "model_seed": 45,
+      "primary_index": 7,
+      "seed": 42,
+      "slot": 4
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 5,
+      "method": "FSCB-no-bonus",
+      "model_seed": 46,
+      "primary_index": 9,
+      "seed": 42,
+      "slot": 1
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 6,
+      "method": "FSCB-no-bonus",
+      "model_seed": 47,
+      "primary_index": 12,
+      "seed": 42,
+      "slot": 2
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 7,
+      "method": "FSCB-no-bonus",
+      "model_seed": 48,
+      "primary_index": 13,
+      "seed": 42,
+      "slot": 3
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 8,
+      "method": "FSCB-no-bonus",
+      "model_seed": 49,
+      "primary_index": 16,
+      "seed": 42,
+      "slot": 4
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 9,
+      "method": "FSCB-no-bonus",
+      "model_seed": 50,
+      "primary_index": 18,
+      "seed": 42,
+      "slot": 1
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 10,
+      "method": "FSCB-no-bonus",
+      "model_seed": 51,
+      "primary_index": 19,
+      "seed": 42,
+      "slot": 2
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 11,
+      "method": "FSCB-no-bonus",
+      "model_seed": 52,
+      "primary_index": 22,
+      "seed": 42,
+      "slot": 3
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 12,
+      "method": "FSCB-no-bonus",
+      "model_seed": 53,
+      "primary_index": 23,
+      "seed": 42,
+      "slot": 4
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 13,
+      "method": "FSCB-no-bonus",
+      "model_seed": 54,
+      "primary_index": 25,
+      "seed": 42,
+      "slot": 1
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 14,
+      "method": "FSCB-no-bonus",
+      "model_seed": 55,
+      "primary_index": 28,
+      "seed": 42,
+      "slot": 2
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 15,
+      "method": "FSCB-no-bonus",
+      "model_seed": 56,
+      "primary_index": 29,
+      "seed": 42,
+      "slot": 3
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 16,
+      "method": "FSCB-no-bonus",
+      "model_seed": 57,
+      "primary_index": 32,
+      "seed": 42,
+      "slot": 4
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 17,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271828,
+      "primary_index": 33,
+      "seed": 271828,
+      "slot": 1
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 18,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271829,
+      "primary_index": 36,
+      "seed": 271828,
+      "slot": 2
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 19,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271830,
+      "primary_index": 37,
+      "seed": 271828,
+      "slot": 3
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 20,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271831,
+      "primary_index": 40,
+      "seed": 271828,
+      "slot": 4
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 21,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271832,
+      "primary_index": 42,
+      "seed": 271828,
+      "slot": 1
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 22,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271833,
+      "primary_index": 43,
+      "seed": 271828,
+      "slot": 2
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 23,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271834,
+      "primary_index": 46,
+      "seed": 271828,
+      "slot": 3
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 24,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271835,
+      "primary_index": 47,
+      "seed": 271828,
+      "slot": 4
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 25,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271836,
+      "primary_index": 49,
+      "seed": 271828,
+      "slot": 1
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 26,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271837,
+      "primary_index": 52,
+      "seed": 271828,
+      "slot": 2
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 27,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271838,
+      "primary_index": 53,
+      "seed": 271828,
+      "slot": 3
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 28,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271839,
+      "primary_index": 56,
+      "seed": 271828,
+      "slot": 4
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 29,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271840,
+      "primary_index": 58,
+      "seed": 271828,
+      "slot": 1
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 30,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271841,
+      "primary_index": 59,
+      "seed": 271828,
+      "slot": 2
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 31,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271842,
+      "primary_index": 62,
+      "seed": 271828,
+      "slot": 3
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 32,
+      "method": "FSCB-no-bonus",
+      "model_seed": 271843,
+      "primary_index": 63,
+      "seed": 271828,
+      "slot": 4
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 33,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314159,
+      "primary_index": 66,
+      "seed": 314159,
+      "slot": 1
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 34,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314160,
+      "primary_index": 67,
+      "seed": 314159,
+      "slot": 2
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 35,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314161,
+      "primary_index": 70,
+      "seed": 314159,
+      "slot": 3
+    },
+    {
+      "group_id": "n2_inputs_00_01_outputs_01",
+      "index": 36,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314162,
+      "primary_index": 71,
+      "seed": 314159,
+      "slot": 4
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 37,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314163,
+      "primary_index": 73,
+      "seed": 314159,
+      "slot": 1
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 38,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314164,
+      "primary_index": 76,
+      "seed": 314159,
+      "slot": 2
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 39,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314165,
+      "primary_index": 77,
+      "seed": 314159,
+      "slot": 3
+    },
+    {
+      "group_id": "n3_inputs_00_01_10_outputs_010",
+      "index": 40,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314166,
+      "primary_index": 80,
+      "seed": 314159,
+      "slot": 4
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 41,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314167,
+      "primary_index": 82,
+      "seed": 314159,
+      "slot": 1
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 42,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314168,
+      "primary_index": 83,
+      "seed": 314159,
+      "slot": 2
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 43,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314169,
+      "primary_index": 86,
+      "seed": 314159,
+      "slot": 3
+    },
+    {
+      "group_id": "n3_inputs_01_10_11_outputs_011",
+      "index": 44,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314170,
+      "primary_index": 87,
+      "seed": 314159,
+      "slot": 4
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 45,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314171,
+      "primary_index": 89,
+      "seed": 314159,
+      "slot": 1
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 46,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314172,
+      "primary_index": 92,
+      "seed": 314159,
+      "slot": 2
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 47,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314173,
+      "primary_index": 93,
+      "seed": 314159,
+      "slot": 3
+    },
+    {
+      "group_id": "n2_inputs_01_10_outputs_11",
+      "index": 48,
+      "method": "FSCB-no-bonus",
+      "model_seed": 314174,
+      "primary_index": 96,
+      "seed": 314159,
+      "slot": 4
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+# FSCB-Hypo implementation audit
+
+The repository implements ACB-Hypo and FSCB-Hypo in one controller module and exercises them through a synthetic, sealed replay with the pinned official evaluator. The live comparison and reward ablation have not run. Historical P3 scores measure Prompt conditions. [Controller](../scripts/fscb_hypo.py) · [Exploratory runner](../scripts/run_exploratory.py) · [Preregistration](exploratory_preregistration.md) · [Historical P3 analysis](p3_deep_analysis.md)
+
+| Item | Implemented behavior |
+| --- | --- |
+| Temperature and modes | ACB offers three Standard arms at 0.2, 0.6 and 1.0. FSCB defines six arms, the same temperatures crossed with Standard and Frontier. Standard uses the P1 base template and shared history. Frontier adds one conditional structural hint. |
+| Buckets | Leaf, AND-only, OR-only, mixed AND-root, mixed OR-root. Respective capacities are 2, 1, 1, 3 and 3 according to the public Boolean Grammar. Only first valid mechanical keys increment counts. |
+| Context | Both use bias 1, observed-row count divided by four, remaining-slot fraction, and recent valid and first-valid-new rates. FSCB appends the occupied-bucket fraction. The recent window has at most four scored outcomes. |
+| Rewards | ACB gives a first valid key 1. FSCB gives it `0.75 + 0.25 × exp(−c)`, where `c` counts earlier discoveries in the returned key's bucket. Both give a valid duplicate 0.2 and an invalid output −0.5. Infrastructure failures and missing mechanical keys skip the bandit update. |
+| LinUCB | Disjoint matrices, ridge 1, exploration coefficient 0.5 and seeded tie-breaking. A least-observed-arm warm-up applies while an available arm has fewer than two feedback events. Updates use the decision-time context and affect only the chosen arm. |
+| Frontier | Available after a first valid discovery if an eligible bucket and size-limited hint remain. Select the lowest count/capacity among unsaturated buckets with fewer than two consecutive misses. Seeded order breaks ties. Count a miss only for an actual Frontier prompt with a scored response. Reset the target's counter on a valid new key in that bucket. |
+| Group state | Each group starts with fresh history, recent feedback, coverage, and misses. The arm statistics persist across groups within each method–Seed trajectory. |
+| Ground Truth | The online collector validates the public manifest and installs its file-access restriction before the first request. Candidate validation uses public observations and the official Grammar, Parser, Validator and key functions. Offline scoring loads the labeled dataset only after collection. |
+
+The rehearsal table gave the correct high-level comparison. Its context row omitted bias and observation fraction, and its arms row did not distinguish the six defined arms from the subset available at a slot. The final deck makes both explicit and puts the bucket, warm-up, reset and reward details in speaker notes. The exploratory study is still unmeasured. The three-temperature baseline, code-level reward behavior and exact slot pairing are verifiable through the synthetic tests. [Candidate history](../scripts/candidate_history.py) · [History tests](../tests/test_candidate_history.py) · [Controller and runner tests](../tests/test_exploratory_comparison.py)
+
+Run `tests/run_offline.py --public` with `PYTHONHASHSEED=0` to verify the synthetic path without a model server or private archive. The full archive-backed suite additionally checks historical regressions and overlap against existing allocations. [Reproduction instructions](../README.md#exploratory-fscb-hypo-study)

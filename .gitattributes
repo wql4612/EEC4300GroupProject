@@ -11,3 +11,13 @@ prompts/d2/P0.txt -text
 prompts/d2/P1.txt -text
 prompts/d2/P2.txt -text
 prompts/d2/P3-draft.txt -text
+
+# Exploratory freezes also bind exact source and manifest bytes.
+scripts/candidate_history.py -text
+scripts/fscb_hypo.py -text
+scripts/prepare_p3_validation.py -text
+scripts/run_exploratory.py -text
+scripts/run_exploratory_ablation.py -text
+configs/exploratory_online_manifest.json -text
+configs/exploratory_ablation_manifest.json -text
+uv.lock -text
