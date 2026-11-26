@@ -1,6 +1,6 @@
 # P3 Controlled Validation 深度离线分析
 
-P3 完成 180/180 次请求，基础设施失败及整块重跑均为 0。P1 的 Official RR 点估计最高（10.67%），P2 的 Official VR 最高（35.00%）。三版均未通过预注册 Seed 稳健性门槛，Pilot 保持未批准。第三轮从逐槽标志、机械键和官方分母独立复算，逐项对照 45 条轨迹的官方 JSON 与 Group–Seed CSV，以及 15 行配对 CSV 的 135 个差值，差异为 0。原始日志字节及封存 SHA-256 同时通过核验。 [独立复算日志](../results/p3-third-review-20261126/independent-recompute.log) · [官方结果](../results/p3/controlled-validation-20261126-210216-final/official-results.json)
+P3 完成 180/180 次请求，基础设施失败及整块重跑均为 0。P1 的 Official RR 点估计最高（10.67%），P2 的 Official VR 最高（35.00%）。三版均未通过预注册 Seed 稳健性门槛，Pilot 保持未批准。第三轮从逐槽标志、机械键和官方分母独立复算，逐项对照 45 条轨迹的官方 JSON 与 Group–Seed CSV，以及 15 行配对 CSV 的 135 个差值，差异为 0。原始日志字节及封存 SHA-256 同时通过核验。 独立复算日志（私有证据 `results/p3-third-review-20261126/independent-recompute.log`） · 官方结果（私有证据 `results/p3/controlled-validation-20261126-210216-final/official-results.json`）
 
 ## 1. 官方指标及阶段分解
 
@@ -18,7 +18,7 @@ Official VR 和 NR 保持每轨迹四槽分母。VR 计空间内且观测一致�
 | P2 | 6.67 个百分点 | +1.33 | +0.67 | 0.00 | +2.00 | 3 |
 | P3 | 4.67 个百分点 | +4.67 | 0.00 | 0.00 | +4.67 | 4 |
 
-分项四舍五入。后三槽消耗 135 次请求，带来 9 个按轨迹去重的恢复键事件，占全部 32 个事件的 28.13%。Q4 三版均无新增。Q1 没有历史，Q2–Q4 使用各自的历史且查询位置更晚，阶段差异只描述轨迹。 [官方评分](../results/p3/controlled-validation-20261126-210216-final/official-results.json)
+分项四舍五入。后三槽消耗 135 次请求，带来 9 个按轨迹去重的恢复键事件，占全部 32 个事件的 28.13%。Q4 三版均无新增。Q1 没有历史，Q2–Q4 使用各自的历史且查询位置更晚，阶段差异只描述轨迹。 官方评分（私有证据 `results/p3/controlled-validation-20261126-210216-final/official-results.json`）
 
 ## 2. 每个 Group–Seed 的官方结果
 
@@ -53,7 +53,7 @@ Official VR 和 NR 保持每轨迹四槽分母。VR 计空间内且观测一致�
 | Seed 271828 | 16.00 / 40.00 | 12.00 / 50.00 | 8.00 / 20.00 |
 | Seed 314159 | 8.00 / 30.00 | 4.00 / 25.00 | 12.00 / 45.00 |
 
-每组跨三个 Seed 等权，每 Seed 跨五组等权。按 Seed 42、271828、314159，有效组数为 P1 3/4/3、P2 3/3/2、P3 2/3/4。三版的汇总 VR 均达到 25%，每版达到至少 4/5 组的 Seed 数分别只有 1、0、1，均低于预注册的 2。配对 RR 差（P2−P1、P3−P1、P3−P2）为 −2.00、−1.33、+0.67 个百分点，正／平／负分别为 3/10/2、3/9/3、3/8/4。 [逐轨迹数据](../results/p3/controlled-validation-20261126-210216-final/group-seed-metrics.csv) · [配对数据](../results/p3/controlled-validation-20261126-210216-final/paired-group-seed-comparison.csv)
+每组跨三个 Seed 等权，每 Seed 跨五组等权。按 Seed 42、271828、314159，有效组数为 P1 3/4/3、P2 3/3/2、P3 2/3/4。三版的汇总 VR 均达到 25%，每版达到至少 4/5 组的 Seed 数分别只有 1、0、1，均低于预注册的 2。配对 RR 差（P2−P1、P3−P1、P3−P2）为 −2.00、−1.33、+0.67 个百分点，正／平／负分别为 3/10/2、3/9/3、3/8/4。 逐轨迹数据（私有证据 `results/p3/controlled-validation-20261126-210216-final/group-seed-metrics.csv`） · 配对数据（私有证据 `results/p3/controlled-validation-20261126-210216-final/paired-group-seed-comparison.csv`）
 
 ## 3. 首次有效新发现和约束失败
 
@@ -65,13 +65,13 @@ Official VR 和 NR 保持每轨迹四槽分母。VR 计空间内且观测一致�
 
 首次分布对每条轨迹只取首次发现的槽。以 P2 为例，八条有发现的轨迹都在 Q1 首次发现，而同批轨迹在 Q2 又新增两键，Q3 再新增一键。逐槽所有新键事件的 Q1/Q2/Q3/Q4 计数分别为 P1 9/1/1/0、P2 8/2/1/0、P3 6/4/0/0。
 
-首次分布以每版 15 条轨迹为分母，其余计数以每版 60 槽为分母。重复文本按同轨迹先前 Parser 输出完全相同计算，含非法候选。空间内重复按官方机械键，有效重复指此前有效发现过的键。深度使用归档的 AST 违规标志，NOT/NOR 是归档正文的词匹配，两者可以重叠。Q1 与后三槽的深度违规分别为 P1 0/28、P2 3/27、P3 2/28，NOT/NOR 分别为 0/28、3/29、3/30。全部 180 槽均可解析且通过 Guard，只有 83 槽空间内，58 槽有效，32 槽为有效新键。 [逐槽证据](../results/p3/controlled-validation-20261126-210216-final/official-results.json)
+首次分布以每版 15 条轨迹为分母，其余计数以每版 60 槽为分母。重复文本按同轨迹先前 Parser 输出完全相同计算，含非法候选。空间内重复按官方机械键，有效重复指此前有效发现过的键。深度使用归档的 AST 违规标志，NOT/NOR 是归档正文的词匹配，两者可以重叠。Q1 与后三槽的深度违规分别为 P1 0/28、P2 3/27、P3 2/28，NOT/NOR 分别为 0/28、3/29、3/30。全部 180 槽均可解析且通过 Guard，只有 83 槽空间内，58 槽有效，32 槽为有效新键。 逐槽证据（私有证据 `results/p3/controlled-validation-20261126-210216-final/official-results.json`）
 
 分解为 **83 个空间内槽 = 25 个观测不一致槽 + 58 个有效槽**，其中 **58 = 26 个有效重复槽 + 32 个首次有效新键事件**。去重单位为每个 Prompt 条件下的一条 Group–Seed 轨迹。同一机械键可以在不同轨迹各计一次首次发现。把所有 32 个事件全局按机械键去重，实测得到 **4 个不同机制**，该数仅作诊断，官方 RR 保持逐组分母。
 
-历史分层每个条件仅包含 Q2–Q4 的 **45 个槽**。已有解析成功的无效历史 vs 无此类历史，有效率分子和分母分别为 P1 2/30 vs 9/15、P2 0/28 vs 13/17、P3 6/35 vs 5/10。分层变量与早期结果、组和查询位置共同变化，只支持相关性描述。 [独立复算日志](../results/p3-third-review-20261126/independent-recompute.log)
+历史分层每个条件仅包含 Q2–Q4 的 **45 个槽**。已有解析成功的无效历史 vs 无此类历史，有效率分子和分母分别为 P1 2/30 vs 9/15、P2 0/28 vs 13/17、P3 6/35 vs 5/10。分层变量与早期结果、组和查询位置共同变化，只支持相关性描述。 独立复算日志（私有证据 `results/p3-third-review-20261126/independent-recompute.log`）
 
-18/45 条轨迹零有效。H4 与 H5 占其中 15 条，均含三个观测。H4 的 36 槽有 12 槽空间内、4 槽有效，P2 三个 Seed 全失败。H5 九条轨迹全失败，36 槽有 21 槽空间外、15 槽空间内但不符合观测。后者都命中常见示例机械键。以公开观测为例，x AND y 在 01→1 上失败，x OR y 在 10→0 上失败。H1 则出现 33 个有效槽与 12 个首次有效事件，P1 的 12 个有效槽只有三个按轨迹去重的事件。当前组数不足以把观测条数判为因果变量。 [在线观测](../results/p3/controlled-validation-20261126-210216-final/online_manifest.json) · [官方结果](../results/p3/controlled-validation-20261126-210216-final/official-results.json)
+18/45 条轨迹零有效。H4 与 H5 占其中 15 条，均含三个观测。H4 的 36 槽有 12 槽空间内、4 槽有效，P2 三个 Seed 全失败。H5 九条轨迹全失败，36 槽有 21 槽空间外、15 槽空间内但不符合观测。后者都命中常见示例机械键。以公开观测为例，x AND y 在 01→1 上失败，x OR y 在 10→0 上失败。H1 则出现 33 个有效槽与 12 个首次有效事件，P1 的 12 个有效槽只有三个按轨迹去重的事件。当前组数不足以把观测条数判为因果变量。 在线观测（私有证据 `results/p3/controlled-validation-20261126-210216-final/online_manifest.json`） · 官方结果（私有证据 `results/p3/controlled-validation-20261126-210216-final/official-results.json`）
 
 ## 4. Prompt 的适用条件
 
@@ -79,4 +79,4 @@ Official VR 和 NR 保持每轨迹四槽分母。VR 计空间内且观测一致�
 - **P2** 适合作为有效槽率与重复关系的对照。有效槽最多，有效重复也最多（10 次），H4 与 H5 无有效解，最终 RR 在三版中最低。
 - **P3** 适合作为后续槽利用和成本的对照。Q2–Q4 的 RR 增量最高，平均请求耗时最低，但 Q1 有效率最低，只有最后一个 Seed 达到 4/5 组覆盖。
 
-三版的失败判定保持原样。上述适用条件用于设计新的独立实验。 [官方评分及成本](../results/p3/controlled-validation-20261126-210216-final/official-results.json)
+三版的失败判定保持原样。上述适用条件用于设计新的独立实验。 官方评分及成本（私有证据 `results/p3/controlled-validation-20261126-210216-final/official-results.json`）

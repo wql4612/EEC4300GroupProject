@@ -13,7 +13,7 @@
 
 第三轮补充契约：原始 History 由 Parser 接受的原文按发生顺序追加；结构化版本先经官方空间和观测 Validator，再取机械键。每组用独立的全程有效键集合记账，展示窗口只保存最近四个首次有效的不同键，重复不刷新次序。由局部白名单映射失败标签：不可解析、越界、观测不一致、缺机械键。基础设施响应只作运行记录，重复候选仅记去重事件，历史不包含失败原文、真值表或答案信息。空历史统一用原模板的 None。诊断建议仅展示最近一次失败的标签，首次调用保持同一空历史。
 
-公平比较以同一组、Seed、渲染位置、最大上下文和输出预算配对。预先固定有版本的同源离线 Token 计数器和公共历史预算，建议每臂上限 128 输入 Tokens，标签计入额度，从最旧完整条目裁减。若事前无法核验 Token 计数器，使用事先同意的保守字符上限并从返回元数据报告真实 Token，避免宣称严格等 Token。原始轨迹只用于证明机械键过滤和窗口行为；新增对照可用诊断关闭臂区分筛选与诊断文字效应。 [Controller 与历史夹具](../results/p3-third-review-20261126/controller-offline-tests.log)
+公平比较以同一组、Seed、渲染位置、最大上下文和输出预算配对。预先固定有版本的同源离线 Token 计数器和公共历史预算，建议每臂上限 128 输入 Tokens，标签计入额度，从最旧完整条目裁减。若事前无法核验 Token 计数器，使用事先同意的保守字符上限并从返回元数据报告真实 Token，避免宣称严格等 Token。原始轨迹只用于证明机械键过滤和窗口行为；新增对照可用诊断关闭臂区分筛选与诊断文字效应。 Controller 与历史夹具（私有证据 `results/p3-third-review-20261126/controller-offline-tests.log`）
 
 ## 2. Grammar 约束与观测自检
 
@@ -22,7 +22,7 @@
 - **最小验证及资源。** 优先用无模型的公开 Grammar 正反例验证转换和边界。若方案 1 与 2 都获准用同一四组，把两项合并为一次历史 × Grammar 的 2×2 预注册筛查，共 192 槽。观测自检留给独立、后来冻结的研究条件。RTX 4060 8 GiB，192 槽按 P3 粗估约 55 秒生成，含准备和评分预留 3–8 分钟。裁决同时看空间内率、观测一致率、官方 RR 和每槽首次有效键。
 - **隔离。** Grammar 只来自公开任务规范。候选层不得读答案键、答案数、兼容列表或离线评分。观测自检只对模型这次提交的候选核对公开观测。
 
-第三轮接口结论：安装的 llama-server 帮助列出 Grammar 与 JSON Schema 选项。Ollama v0.40.14 的 GenerateRequest 接收 format，生成路由传给 Completion；后端对 JSON 对象 format 设置 json_schema，对字符串 json 使用通用 JSON Grammar。当前冻结采集器未发送 format。由此可确认本地版本支持结构化解码接口，尚未在 Qwen 上验证特定 Boolean Schema 的端到端约束。后端 CLI 的原生 GBNF 选项也不能推定为 Ollama 的公开 HTTP 字段。 [安装二进制帮助](../results/p3-third-review-20261126/ollama-grammar-help.log) · [v0.40.14 API 类型](https://github.com/ollama/ollama/blob/v0.40.14/api/types.go) · [v0.40.14 生成路由](https://github.com/ollama/ollama/blob/v0.40.14/server/routes.go) · [v0.40.14 后端映射](https://github.com/ollama/ollama/blob/v0.40.14/llm/llama_server.go)
+第三轮接口结论：安装的 llama-server 帮助列出 Grammar 与 JSON Schema 选项。Ollama v0.40.14 的 GenerateRequest 接收 format，生成路由传给 Completion；后端对 JSON 对象 format 设置 json_schema，对字符串 json 使用通用 JSON Grammar。当前冻结采集器未发送 format。由此可确认本地版本支持结构化解码接口，尚未在 Qwen 上验证特定 Boolean Schema 的端到端约束。后端 CLI 的原生 GBNF 选项也不能推定为 Ollama 的公开 HTTP 字段。 安装二进制帮助（私有证据 `results/p3-third-review-20261126/ollama-grammar-help.log`） · [v0.40.14 API 类型](https://github.com/ollama/ollama/blob/v0.40.14/api/types.go) · [v0.40.14 生成路由](https://github.com/ollama/ollama/blob/v0.40.14/server/routes.go) · [v0.40.14 后端映射](https://github.com/ollama/ollama/blob/v0.40.14/llm/llama_server.go)
 
 建议只在获批的新条件里测试 JSON 对象内一个 expression 字段，以公共 Grammar 枚举的十个机械键的合法代表式构造 enum，同一表用于所有组。先离线验证一一映射和官方 Parser 的确定性适配，再在批准的能力试验中确认 Schema 执行。保留原始 JSON、适配产物和接口拒绝证据。对照也使用相同输出信封和 Parser 适配，仅放宽 expression 值约束。通用 JSON 或纯 Prompt 提醒只作格式／软约束，不记为硬 Boolean 语法控制。观测自检独立成另一条件：同一请求内要求按公开行核对且只返回一个候选，收到后本地 Validator 仅检查该候选一次。即使截断、格式错误或观测失配，照常记账，严禁隐式修补、再调用或拒绝后重采样。
 

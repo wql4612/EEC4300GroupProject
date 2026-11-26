@@ -158,17 +158,17 @@ HTTP 计时为请求发送到读完响应的墙钟时间，P95 使用最近秩�
 
 在线工作进程只加载去标签 manifest。开始请求前封锁新文件读取和子进程，实际对原始答案文件的打开失败。隔离在 Python 工作进程层执行。离线进程从 HTTP 正文字节核对封存响应，将原模型文本原样送回官方 Evaluator；Guard verdict 独立记录。大写变量夹具的只读人工复核见回放审阅记录。采集日志和评分文件分别保留。
 
-- [启动前十项检查和 16 项离线测试结果](../results/d2/prompt-20261126/preflight.json)
-- [冻结配置、模型摘要和哈希](../results/d2/prompt-20261126/freeze.json) · [分组清单](../results/d2/prompt-20261126/split_manifest.json) · [采集 manifest](../results/d2/prompt-20261126/online_manifest.json)
-- [封存 HTTP 请求和响应](../results/d2/prompt-20261126/requests.jsonl) · [采集日志](../results/d2/prompt-20261126/collection.log)
-- [官方结果和逐槽诊断](../results/d2/prompt-20261126/official-results.json) · [逐种子和逐组 CSV](../results/d2/prompt-20261126/group-seed-metrics.csv)
-- [GPU 采样](../results/d2/prompt-20261126/gpu-samples.csv) · [Ollama 结束状态](../results/d2/prompt-20261126/ollama-after.txt) · [原文安全复核记录](../results/d2/prompt-20261126/reviewed-replay-expressions.json)
+- 启动前十项检查和 16 项离线测试结果（私有证据 `results/d2/prompt-20261126/preflight.json`）
+- 冻结配置、模型摘要和哈希（私有证据 `results/d2/prompt-20261126/freeze.json`） · 分组清单（私有证据 `results/d2/prompt-20261126/split_manifest.json`） · 采集 manifest（私有证据 `results/d2/prompt-20261126/online_manifest.json`）
+- 封存 HTTP 请求和响应（私有证据 `results/d2/prompt-20261126/requests.jsonl`） · 采集日志（私有证据 `results/d2/prompt-20261126/collection.log`）
+- 官方结果和逐槽诊断（私有证据 `results/d2/prompt-20261126/official-results.json`） · 逐种子和逐组 CSV（私有证据 `results/d2/prompt-20261126/group-seed-metrics.csv`）
+- GPU 采样（私有证据 `results/d2/prompt-20261126/gpu-samples.csv`） · Ollama 结束状态（私有证据 `results/d2/prompt-20261126/ollama-after.txt`） · 原文安全复核记录（私有证据 `results/d2/prompt-20261126/reviewed-replay-expressions.json`）
 
-复算现有日志（无模型请求）
+获得私有证据后，将封存输入复制到新目录再复算。下例的副本应有原始输入和原文复核记录，其中不放历史评分输出。评分器会拒绝覆盖现有评分文件。 [完整复现条件](../README.md#full-reproduction-and-private-evidence)
 
 ```powershell
 $env:PYTHONHASHSEED = '0'
-.\.venv\Scripts\python.exe -B -m scripts.score_d2_prompt results/d2/prompt-20261126
+.\.venv\Scripts\python.exe -B -m scripts.score_d2_prompt results/d2/offline-replay-copy
 ```
 
 ## 附录：本次使用的完整模板

@@ -45,3 +45,19 @@ At the pinned upstream revision, the basic operator set contains AND and OR. The
 The upstream CLI stays available independently. Run `.\.venv\Scripts\python.exe -B ../HypoSpace/boolean/boolean_benchmark.py --help` to inspect its options. The D1 output checks connectivity to the benchmark and supplies a reproducible development fixture.
 
 On the initial D1 sample, Qwen generated three parseable responses that used an operator outside the basic dataset space. The benchmark emitted VR, NR, and RR of zero, and the smoke command exited with status 1. An explicitly labeled offline positive control confirmed that upstream scored two equivalent, manually supplied valid expressions as VR = 1, NR = 0.5, and RR = 0.5. The positive control is separate from the model result.
+
+## Full reproduction and private evidence
+
+The repository contains the experiment code, frozen Prompt templates, reviewed summaries, and the P3 preregistration. D2 and P3 have both concluded. None of the P3 Prompt conditions passed the preregistered Seed robustness criterion. The Pilot is awaiting separate approval. [Prompt versions](prompts/d2/README.md) · [D2 results](docs/d2_prompt_report.md) · [P3 preregistration](docs/p3_validation_plan.md) · [P3 results](docs/p3_deep_analysis.md)
+
+The benchmark dataset under `data/d1/` contains answer keys. The historical contents of `results/`, including manifests, raw HTTP bodies, model outputs, official per-slot scores, and audit logs, are held in the team's access-controlled archive. Paths marked as private evidence identify files in that archive. The dataset-generation command above can recreate the Boolean space. For historical replay, use the exact archived dataset bytes at the registered path and the matching D2 split rather than assuming that a fresh export has the same SHA-256. Enter observations through the label-free online manifest. Answer-bearing data is reserved for offline preparation and scoring.
+
+To replay historical scores, check out the archived experiment source on this branch and the clean pinned upstream commit, use the Python and package versions pinned above, and verify all frozen file hashes. Obtain the exact run bundle from the team archive with its original layout. It includes the D2 split, or the P3 selection and collection seal, along with the matching Freeze, Preflight, online manifest, raw journal, and any replay review file required by the scorer. Verify these inputs before use. Copy them to a new working directory without existing score outputs. Run the relevant scorer on that copy and compare its results to the archived official outputs. This step uses CPU replay and requires no model server.
+
+```powershell
+$env:PYTHONHASHSEED = '0'
+.\.venv\Scripts\python.exe -B -m scripts.score_d2_prompt results/d2/offline-replay-copy
+.\.venv\Scripts\python.exe -B -m scripts.score_p3_prompt results/p3/offline-replay-copy
+```
+
+Reproducing the original generation conditions additionally requires the frozen Ollama 0.40.14 runtime, matching `qwen2.5:3b` model digest and Template SHA-256, the versioned Prompt templates, and the exact public observations, Seed mapping, sampling settings, and request order from the corresponding manifest. The P3 preflight and sealed receipts document these bindings. A fresh run would have its own results directory and experiment record. [Pinned Boolean benchmark source](https://github.com/CTT-Pavilion/_HypoSpace/blob/c69e9318577b34b5b896996571aefd4ba6053f58/boolean/boolean_benchmark.py) · [P3 verification procedure](docs/p3_validation_plan.md) · [Evidence inventory](docs/git_archival_plan.md)

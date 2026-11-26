@@ -1,13 +1,13 @@
 # 独立 Boolean 数据来源可行性
 
-**原协议下无法凑齐至少五个未暴露且未分配的新组。** 使用固定 HypoSpace 提交 c69e9318577b34b5b896996571aefd4ba6053f58，在本地内存用官方生成器分别以原 Seed 33550336 和对照 Seed 42 重枚举。两次均与 D1 存档的数据字典逐 ID、逐公开观测 SHA-256 指纹一致。既有全集之外的新组数为 0。 [生成器复核日志](../results/p3-third-review-20261126/dataset-feasibility.log)
+**原协议下无法凑齐至少五个未暴露且未分配的新组。** 使用固定 HypoSpace 提交 c69e9318577b34b5b896996571aefd4ba6053f58，在本地内存用官方生成器分别以原 Seed 33550336 和对照 Seed 42 重枚举。两次均与 D1 存档的数据字典逐 ID、逐公开观测 SHA-256 指纹一致。既有全集之外的新组数为 0。 生成器复核日志（私有证据 `results/p3-third-review-20261126/dataset-feasibility.log`）
 
 ## 生成协议及完整空间
 
-使用官方 BooleanDatasetGenerator.generate_complete_dataset_collection，固定 x、y，basic 的 AND/OR，最大 AST 深度 2，沿用 D1 的交换律、AND/OR 幂等和结合展平设置。生成器先枚举 10 个机械键，归并到 4 种语义函数，再穷举四个二元输入的 1–4 行子集及二元输出分配。只保留至少有一个兼容候选的观测组。合法观测组数按行数为 **6、13、12、4**，共 **35**。这段全集枚举未用 RNG 改变输入、输出或筛选，换 Seed 无法扩充。单组随机玩法在完全相同的 Grammar 和观测协议下同样只能采到全集内的组。 [固定生成器源码](../../HypoSpace/boolean/boolean_dataset.py)
+使用官方 BooleanDatasetGenerator.generate_complete_dataset_collection，固定 x、y，basic 的 AND/OR，最大 AST 深度 2，沿用 D1 的交换律、AND/OR 幂等和结合展平设置。生成器先枚举 10 个机械键，归并到 4 种语义函数，再穷举四个二元输入的 1–4 行子集及二元输出分配。只保留至少有一个兼容候选的观测组。合法观测组数按行数为 **6、13、12、4**，共 **35**。这段全集枚举未用 RNG 改变输入、输出或筛选，换 Seed 无法扩充。单组随机玩法在完全相同的 Grammar 和观测协议下同样只能采到全集内的组。 [固定生成器源码](https://github.com/CTT-Pavilion/_HypoSpace/blob/c69e9318577b34b5b896996571aefd4ba6053f58/boolean/boolean_dataset.py)
 
 ## 独立性审计
 
-把公开观测排序为 x、y、output 整数三元组，用 Python 默认 JSON 表示再计算 SHA-256，和既有冻结指纹逐一核对。D1 依据官方记录确认 1 个已暴露组，D2 和 P3 按原请求日志确认分别 5 个，互不重叠。全集中还有 24 个从未在这三个阶段运行，但其中 20 个已分配给冻结的 Pilot 和正式划分，只有 **4 个未暴露且未分配**。四个保留组的 ID 和指纹与 P3 选择清单一致。审计没有按答案数量挑组。 [冻结选择清单](../results/p3/controlled-validation-20261126-210216-final/selection_manifest.json) · [D2 划分](../results/d2/prompt-20261126/split_manifest.json)
+把公开观测排序为 x、y、output 整数三元组，用 Python 默认 JSON 表示再计算 SHA-256，和既有冻结指纹逐一核对。D1 依据官方记录确认 1 个已暴露组，D2 和 P3 按原请求日志确认分别 5 个，互不重叠。全集中还有 24 个从未在这三个阶段运行，但其中 20 个已分配给冻结的 Pilot 和正式划分，只有 **4 个未暴露且未分配**。四个保留组的 ID 和指纹与 P3 选择清单一致。审计没有按答案数量挑组。 冻结选择清单（私有证据 `results/p3/controlled-validation-20261126-210216-final/selection_manifest.json`） · D2 划分（私有证据 `results/d2/prompt-20261126/split_manifest.json`）
 
 完整生成对象仅在离线复核进程内存在，审计日志只输出公开组指纹及汇总计数，未导出答案、兼容表达式或候选真值表。未来在线进程仍只接收去标签的观测白名单，答案材料由离线 scorer 持有。按四组做机制筛查须另立方案和取得授权，无法判定原五组质量门槛。增加变量、变更深度或运算符、改变观测协议或动用冻结划分都需要另行审核，H1–H5 不再作为独立测试组。

@@ -12,7 +12,7 @@
 | 表达式空间与观测一致性 | 180 槽全解析且通过 Guard，97 槽仍越界，另有 25 槽空间内但与观测不一致。深度与禁用算符经常重叠，不能相加。H5 的 15 条空间内候选全部不符合观测；语法约束只能处理其中一类失败。 |
 | 控制器可获得的反馈 | P3 的 32 个首次有效键主要集中在 AND-only（20），其余为 OR-only（7）、OR-root mixed（3）和 AND-root mixed（2），跨轨迹累加，含不同轨迹的同键。按首条有效新键之后剩余槽位计算，P1/P2/P3 分别有 29/24/24 个历史窗口。这只是可开始利用历史的上界，实际 Frontier 还受目标桶、连续未命中和动作约束影响。 |
 
-[D1 修复后官方结果](../results/d1/smoke-retry-20261125-174050/result.json) · [D2 离线分析](d2_result_analysis.md) · [P3 采集入口](../scripts/run_d2_prompt.py) · [P3 官方结果](../results/p3/controlled-validation-20261126-210216-final/official-results.json)
+D1 修复后官方结果（私有证据 `results/d1/smoke-retry-20261125-174050/result.json`） · [D2 离线分析](d2_result_analysis.md) · [P3 采集入口](../scripts/run_d2_prompt.py) · P3 官方结果（私有证据 `results/p3/controlled-validation-20261126-210216-final/official-results.json`）
 
 ## 推测与待验证假设
 
@@ -32,4 +32,4 @@
 | 奖励与持久化 | 以决策前的实际产出桶计数计算边际奖励。有效旧键 +0.2，明确无效 −0.5，基础设施失败或有效键缺失不更新参数。以 (run,group,slot) 幂等提交。组间清除候选历史、有效集合、结构计数、未命中计数及窗口；同方法同 Seed 的 A、b 与反馈计数保留，不同方法或 Seed 独立初始化。 |
 | 固定、随机及消融 | 固定温度基线全用 Standard。Random 使用相同可用性与预热规则，之后从自身可用臂均匀采样。β=0 保留其他规则。中性前沿保留 arm ID 和等价长度预算，但不更新真实前沿未命中，后续可用性可能自然分化，须报告曝光差异并在解释时计入。 |
 
-七项离线规范夹具全部通过，覆盖可用性、预算与并列、基础与消融奖励、命中逻辑、曝光与幂等、状态隔离、预热和基线。观测验证夹具通过未修改的官方 Validator，只传入公开观测，丢弃返回的候选真值表。夹具是参考预言机，尚无生产控制器实现或在线效应证据。 [Controller 离线测试日志](../results/p3-third-review-20261126/controller-offline-tests.log)
+七项离线规范夹具全部通过，覆盖可用性、预算与并列、基础与消融奖励、命中逻辑、曝光与幂等、状态隔离、预热和基线。观测验证夹具通过未修改的官方 Validator，只传入公开观测，丢弃返回的候选真值表。夹具是参考预言机，尚无生产控制器实现或在线效应证据。 Controller 离线测试日志（私有证据 `results/p3-third-review-20261126/controller-offline-tests.log`）

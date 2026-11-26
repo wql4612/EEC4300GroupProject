@@ -1,4 +1,4 @@
-# D2 Boolean basic Prompt 版本
+# Boolean basic Prompt 版本
 
 [P0 原始模板](P0.txt) · [P1 示例修复](P1.txt) · [P2 明确约束与格式示例](P2.txt)
 
@@ -52,8 +52,10 @@
 
 P0 → P1 估计一组示例修复的效果。P1 → P2 估计明确约束和增补示例的联合效果，现有矩阵无法独立估计这两项改动。
 
-## P3 · Draft / Pending Approval
+## P3 · 已冻结并完成验证
 
-[P3-draft.txt](P3-draft.txt) 供审核。完整草案和两组精确差异见 [D2 离线分析第 6 节](../../docs/d2_result_analysis.md#6-p3-prompt-proposal)。
+[P3-draft.txt](P3-draft.txt) 是 P3 Controlled Validation 使用的独立冻结条件，沿用预注册文件名。180 次请求已完成，P3 未通过预注册的 Seed 稳健性门槛。 [实验结项](../../docs/p3_deep_analysis.md)
 
-草案 SHA-256（UTF-8/LF）为 `3dc9205f284eb45464dd7c70978bf006da3cdaad0ac5cf8b0da9aa206580b2a5`。
+完整模板和两组精确差异见 [D2 离线分析第 6 节](../../docs/d2_result_analysis.md#6-p3-prompt-proposal)。
+
+冻结模板 SHA-256（UTF-8/LF）为 `3dc9205f284eb45464dd7c70978bf006da3cdaad0ac5cf8b0da9aa206580b2a5`。

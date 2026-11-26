@@ -1,6 +1,8 @@
 # D2 离线结果分析与 FSCB-Hypo 审查
 
-**2026-11-26 · 待复审。** 本报告只使用已完成的 Boolean basic D2 对照。实验记录为 3 个 Prompt × 5 个观测组 × 3 个种子 × 4 个查询槽，共 180 条。标题中标明“离线”的结果由冻结日志重算，“情景估算”仅用于评估未来 Pilot 的预算。
+**历史记录 · 2026-11-26。** 本报告只使用已完成的 Boolean basic D2 对照。实验记录为 3 个 Prompt × 5 个观测组 × 3 个种子 × 4 个查询槽，共 180 条。标题中标明“离线”的结果由冻结日志重算，“情景估算”仅用于评估未来 Pilot 的预算。
+
+> 本文保留 D2 结项时的分析与 P3 提案。此后 P3 已在五个留出开发组完成受控验证，三个条件均未达到原定 Seed 门槛。本文中的九个未分配组是 D2 时点的数量，P3 结束后剩四个。 [P3 结项](p3_deep_analysis.md) · [当前独立数据审计](independent_dataset_feasibility.md)
 
 ## 1. Executive Summary
 
@@ -11,9 +13,9 @@
 
 ## 2. D2 Metric Verification
 
-**冻结实验与离线复核。** 检查了 180 条封存请求的配对种子、请求顺序、原始 HTTP 正文中的响应值、逐槽 Prompt 哈希、模型摘要及参数。180 次 HTTP 200，重跑为 0。将已审阅原文以 Replay 方式交给固定版本 `c69e9318577b34b5b896996571aefd4ba6053f58` 的 Evaluator，在内存逐字段复现 45 条 `official` 结果及 CSV 指标，并逐条对照 180 槽的提取、有效、空间与首次新键标志。此前复核过的大写变量响应沿用原文。离线进程阻止 socket 操作，仅允许本地 `gethostname` 供库初始化。 [原始请求](../results/d2/prompt-20261126/requests.jsonl) · [官方回放 JSON](../results/d2/prompt-20261126/official-results.json) · [45 条 CSV](../results/d2/prompt-20261126/group-seed-metrics.csv) · [冻结收据](../results/d2/prompt-20261126/freeze.json) · [在线清单](../results/d2/prompt-20261126/online_manifest.json) · [启动预检](../results/d2/prompt-20261126/preflight.json) · [原文复核记录](../results/d2/prompt-20261126/reviewed-replay-expressions.json)
+**冻结实验与离线复核。** 检查了 180 条封存请求的配对种子、请求顺序、原始 HTTP 正文中的响应值、逐槽 Prompt 哈希、模型摘要及参数。180 次 HTTP 200，重跑为 0。将已审阅原文以 Replay 方式交给固定版本 `c69e9318577b34b5b896996571aefd4ba6053f58` 的 Evaluator，在内存逐字段复现 45 条 `official` 结果及 CSV 指标，并逐条对照 180 槽的提取、有效、空间与首次新键标志。此前复核过的大写变量响应沿用原文。离线进程阻止 socket 操作，仅允许本地 `gethostname` 供库初始化。 原始请求（私有证据 `results/d2/prompt-20261126/requests.jsonl`） · 官方回放 JSON（私有证据 `results/d2/prompt-20261126/official-results.json`） · 45 条 CSV（私有证据 `results/d2/prompt-20261126/group-seed-metrics.csv`） · 冻结收据（私有证据 `results/d2/prompt-20261126/freeze.json`） · 在线清单（私有证据 `results/d2/prompt-20261126/online_manifest.json`） · 启动预检（私有证据 `results/d2/prompt-20261126/preflight.json`） · 原文复核记录（私有证据 `results/d2/prompt-20261126/reviewed-replay-expressions.json`）
 
-**指标口径。** Parser 负责提取文本，`_in_space` 用 AST 判定变量、运算符、布尔常量及深度，`validate_expression` 再对照公开观测。对本次 180 条数据，所有官方有效槽也通过空间检查。VR 是有效次数除以槽数。NR 是空间内不同机械键数除以槽数，可以包含观测不一致的机械键。RR 以官方有效机械键集合匹配官方答案键列表的位置，分母是该轨迹官方答案键列表的长度。交换律、同算符结合折叠、幂等会改变键的表示，吸收律等语义等价没有用于去重。本次五个开发组的答案键列表无键重复。 [固定版 Evaluator、Parser、Validator](../../HypoSpace/boolean/boolean_benchmark.py) · [固定版机械键实现](../../HypoSpace/boolean/boolean_dataset.py)
+**指标口径。** Parser 负责提取文本，`_in_space` 用 AST 判定变量、运算符、布尔常量及深度，`validate_expression` 再对照公开观测。对本次 180 条数据，所有官方有效槽也通过空间检查。VR 是有效次数除以槽数。NR 是空间内不同机械键数除以槽数，可以包含观测不一致的机械键。RR 以官方有效机械键集合匹配官方答案键列表的位置，分母是该轨迹官方答案键列表的长度。交换律、同算符结合折叠、幂等会改变键的表示，吸收律等语义等价没有用于去重。本次五个开发组的答案键列表无键重复。 [固定版 Evaluator、Parser、Validator](https://github.com/CTT-Pavilion/_HypoSpace/blob/c69e9318577b34b5b896996571aefd4ba6053f58/boolean/boolean_benchmark.py) · [固定版机械键实现](https://github.com/CTT-Pavilion/_HypoSpace/blob/c69e9318577b34b5b896996571aefd4ba6053f58/boolean/boolean_dataset.py)
 
 | Prompt | Parser | Guard | In-space | 官方 VR | 官方 NR | 官方 RR | 首次有效新键率 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -160,7 +162,7 @@ N 为 AST 含禁用 NOT 或官方识别的 NOR 形态。V 为 AST 自由变量�
 
 ### 真实案例
 
-原文列保留封存模型响应的格式。行号是 [requests.jsonl](../results/d2/prompt-20261126/requests.jsonl) 的 1 基行号。观测写成 `xy→结果`。
+原文列保留封存模型响应的格式。行号是 requests.jsonl（私有证据 `results/d2/prompt-20261126/requests.jsonl`） 的 1 基行号。观测写成 `xy→结果`。
 
 | 原始行 | Prompt／组／Seed／槽 | 原始响应 | 观测 | 官方判定及原因 |
 | --- | --- | --- | --- | --- |
@@ -250,7 +252,7 @@ N 为 AST 含禁用 NOT 或官方识别的 NOR 形态。V 为 AST 自由变量�
 
 **研究假设。** 保留显式约束可能帮助模型区分生成语法与格式说明，并在首槽提醒观测优先。去掉重复示例可能减轻两个键的表面锚定，也可能削弱合法格式提示或减少这个数据集刚好能恢复的 `x OR y`。观察的主要失败是 B 越界和 C 观测不一致。P3 没有增加解题步骤、改变历史、要求特定结构或引入任何答案信息。成功标准沿用原 VR 和覆盖门槛，官方 RR 继续单列。
 
-**留出核查。** 数据共 35 组，冻结开发 5、Pilot 5、正式 15，另外 1 组为已使用 D1，剩余 **9 个未分配组**，按 1/2/3/4 条观测分别为 **1/4/4/0**。九组的观测指纹均未出现在三个冻结划分。它们可以作为同一合成数据集中的新观测组留出，不过与既有组仍可能共享结构族。当前没有未分配的四观测组，因此未来验证无法完整复现 D2 的观测条数配比。建议等获准后按可见观测条数预先抽取五组，例如 1/2/2，冻结分组、种子与所有模板后再用 P1/P2/P3 平行比较。其余四组保留。Pilot 和正式组继续隔离。 [冻结划分](../results/d2/prompt-20261126/split_manifest.json)
+**留出核查。** 数据共 35 组，冻结开发 5、Pilot 5、正式 15，另外 1 组为已使用 D1，剩余 **9 个未分配组**，按 1/2/3/4 条观测分别为 **1/4/4/0**。九组的观测指纹均未出现在三个冻结划分。它们可以作为同一合成数据集中的新观测组留出，不过与既有组仍可能共享结构族。当前没有未分配的四观测组，因此未来验证无法完整复现 D2 的观测条数配比。建议等获准后按可见观测条数预先抽取五组，例如 1/2/2，冻结分组、种子与所有模板后再用 P1/P2/P3 平行比较。其余四组保留。Pilot 和正式组继续隔离。 冻结划分（私有证据 `results/d2/prompt-20261126/split_manifest.json`）
 
 尚未执行的 P3 模板 SHA-256（UTF-8/LF）为 `3dc9205f284eb45464dd7c70978bf006da3cdaad0ac5cf8b0da9aa206580b2a5`。插槽继续由可见观测与当前 Prompt 的本轨迹候选历史填充。
 

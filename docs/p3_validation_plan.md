@@ -1,6 +1,8 @@
 # P3 Controlled Validation 实验预注册
 
-**2026-11-26 · 设计有条件通过，待最终启动授权。** 本文记录已审核的 Prompt、留出组、请求矩阵和评分规则。本次修订明确评分分母、Token 成本和离线预检。
+**历史预注册 · 2026-11-26。** 本文保留启动前冻结的 Prompt、留出组、请求矩阵、评分规则和检查清单。
+
+> P3 已获单独启动授权并完成 180 个计划槽，日志已封存，官方离线评分已完成。三个 Prompt 均达到汇总 VR 门槛，均未通过 Seed 稳健性门槛。Pilot 尚未批准。本文的计划措辞和放行定义按预注册保留。 [P3 结项](p3_deep_analysis.md)
 
 ## 1. 研究问题与冻结 Prompt
 
@@ -12,11 +14,11 @@ P1 提供已修复语法示例的基线。P3 在 P1 上加入与 P2 相同的三
 | P2 | [P2.txt](../prompts/d2/P2.txt) | `5811d33e71fdafc0eaf59d10e6d50695480f8cef3959f3096072ba31cad6d265` |
 | P3 | [P3-draft.txt](../prompts/d2/P3-draft.txt) | `3dc9205f284eb45464dd7c70978bf006da3cdaad0ac5cf8b0da9aa206580b2a5` |
 
-三份文件均已按当前字节重算 SHA-256。P1/P2 与 D2 冻结收据一致，P3 与已审核草案一致。P3 使用独立实验条件 ID `P3`，路径继续保留 `P3-draft.txt`。三版均保留各自的完整模板，渲染时只替换 `{{OBSERVATIONS}}` 和 `{{PRIOR_EXPRESSIONS}}`。 [D2 冻结收据](../results/d2/prompt-20261126/freeze.json)
+三份文件均已按当前字节重算 SHA-256。P1/P2 与 D2 冻结收据一致，P3 与已审核草案一致。P3 使用独立实验条件 ID `P3`，路径继续保留 `P3-draft.txt`。三版均保留各自的完整模板，渲染时只替换 `{{OBSERVATIONS}}` 和 `{{PRIOR_EXPRESSIONS}}`。 D2 冻结收据（私有证据 `results/d2/prompt-20261126/freeze.json`）
 
 ## 2. 留出开发组
 
-从 35 个公开 Observation Group ID 减去 D1 的 1 组、D2 开发的 5 组、Pilot 的 5 组和正式的 15 组，得到 9 个未分配组。在各观测条数层内，按 `SHA256(UTF-8("p3-heldout-v1:" + Group ID))` 的完整十六进制值升序排列，若同哈希则以 Group ID 升序打破并列。依次取 1、2、2 个，获得 H1–H5。排序仅依赖公开 ID 和观测条数，未使用答案数、答案结构、既有评分或难度。分层内取排名前列以避免人工挑样。其余四组继续保留。本池无四观测组，结果的适用范围是本次 1–3 条观测的留出样本。 [D2 冻结划分](../results/d2/prompt-20261126/split_manifest.json)
+从 35 个公开 Observation Group ID 减去 D1 的 1 组、D2 开发的 5 组、Pilot 的 5 组和正式的 15 组，得到 9 个未分配组。在各观测条数层内，按 `SHA256(UTF-8("p3-heldout-v1:" + Group ID))` 的完整十六进制值升序排列，若同哈希则以 Group ID 升序打破并列。依次取 1、2、2 个，获得 H1–H5。排序仅依赖公开 ID 和观测条数，未使用答案数、答案结构、既有评分或难度。分层内取排名前列以避免人工挑样。其余四组继续保留。本池无四观测组，结果的适用范围是本次 1–3 条观测的留出样本。 D2 冻结划分（私有证据 `results/d2/prompt-20261126/split_manifest.json`）
 
 | 观测条数 | 层内排名 | 候选 Group ID | 决定 | Observation Fingerprint |
 | ---: | ---: | --- | --- | --- |
@@ -39,7 +41,7 @@ P1 提供已修复语法示例的基线。P3 在 P1 上加入与 P2 相同的三
 | Pilot | 5 | 0 | 0 |
 | 正式 | 15 | 0 | 0 |
 
-离线核验确认原数据集和原 split manifest 的 SHA-256 分别与 D2 冻结值 `84ad5ed3385303bfd0cdc5507fcba890bd06921c2594908ca9b839aebd389bab`、`94f7b0b1ea8d17b94b2a87d6a1c177597fd3134792b261e96094562dd35f981a` 一致。P3 留出清单单独保存在本文，原划分文件保持原样。 [实际 D2 在线清单](../results/d2/prompt-20261126/online_manifest.json)
+离线核验确认原数据集和原 split manifest 的 SHA-256 分别与 D2 冻结值 `84ad5ed3385303bfd0cdc5507fcba890bd06921c2594908ca9b839aebd389bab`、`94f7b0b1ea8d17b94b2a87d6a1c177597fd3134792b261e96094562dd35f981a` 一致。P3 留出清单单独保存在本文，原划分文件保持原样。 实际 D2 在线清单（私有证据 `results/d2/prompt-20261126/online_manifest.json`）
 
 ## 3. 实验矩阵与 Seed 映射
 
@@ -124,7 +126,7 @@ P3 采集入口为 `scripts.run_d2_prompt --p3 <run_dir>`。生产入口在打�
 
 ## 7. 资源与风险估算
 
-估算基于 D2 同模型、同请求预算和参数。D2 实测 180 次成功请求从首请求开始到末请求完成为 **63.42 秒**，每条件的 HTTP 中位约 0.26–0.28 秒，P95 约 0.36–0.44 秒。RTX 4060 Laptop GPU 总显存 **8,188 MiB**，54 个完整样本的整卡显存峰值为 **4,861 MiB**。采集结束时模型显示 **100% GPU、上下文 4096**。这些数值用于估算，不代表当前机器的已检状态。 [D2 耗时与显存](d2_prompt_report.md#k-模型耗时显存与失败案例) · [GPU 原始采样](../results/d2/prompt-20261126/gpu-samples.csv) · [Ollama 运行记录](../results/d2/prompt-20261126/ollama-after.txt)
+估算基于 D2 同模型、同请求预算和参数。D2 实测 180 次成功请求从首请求开始到末请求完成为 **63.42 秒**，每条件的 HTTP 中位约 0.26–0.28 秒，P95 约 0.36–0.44 秒。RTX 4060 Laptop GPU 总显存 **8,188 MiB**，54 个完整样本的整卡显存峰值为 **4,861 MiB**。采集结束时模型显示 **100% GPU、上下文 4096**。这些数值用于估算，不代表当前机器的已检状态。 [D2 耗时与显存](d2_prompt_report.md#k-模型耗时显存与失败案例) · GPU 原始采样（私有证据 `results/d2/prompt-20261126/gpu-samples.csv`） · Ollama 运行记录（私有证据 `results/d2/prompt-20261126/ollama-after.txt`）
 
 | 项目 | 预估与依据 |
 | --- | --- |
